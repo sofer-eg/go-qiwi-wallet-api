@@ -140,6 +140,20 @@ func (api *QiwiApi) GetBalance() (*Balances, error) {
 	return &result, nil
 }
 
+// get transaction info
+func (api *QiwiApi) GetTransaction(transactionId string) (*Transaction, error) {
+	baseUrl := api.apiUrl + "payment-history/v2/transactions/" + transactionId
+
+	body, err := api.request(baseUrl, "GET", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var result Transaction
+	json.Unmarshal(body, &result)
+	return &result, nil
+}
+
 // get standard rate by provider code
 func (api *QiwiApi) GetStandardRate(providerCode string) (*StandardRate, error) {
 	baseUrl := api.apiUrl + "sinap/providers/" + providerCode + "/form"
